@@ -129,9 +129,9 @@ def build_example(name, identifier, admin_config, custom_processing_msg):
     nip89config.DTAG = check_and_set_d_tag(identifier, name, dvm_config.PRIVATE_KEY, nip89info["picture"])
     nip89config.CONTENT = json.dumps(nip89info)
 
-    return TrendingNotesNostrBand(name=name, dvm_config=dvm_config, nip89config=nip89config,
+    return TrendingLUMINARelay(name=name, dvm_config=dvm_config, nip89config=nip89config,
                                   admin_config=admin_config)
 
 
 if __name__ == '__main__':
-    process_venv(TrendingNotesNostrBand)
+    process_venv(TrendingLUMINARelay)
