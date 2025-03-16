@@ -3,7 +3,8 @@ from pathlib import Path
 import dotenv
 
 from nostr_dvm.framework import DVMFramework
-from nostr_dvm.tasks.generic_dvm import GenericDVM
+# from nostr_dvm.tasks.generic_dvm import GenericDVM
+from nostr_dvm.tasks.discovery_trending_lumina_relay import TrendingLUMINARelay
 from nostr_dvm.utils.admin_utils import AdminConfig
 from nostr_dvm.utils.dvmconfig import build_default_config
 from nostr_dvm.utils.nip89_utils import NIP89Config, check_and_set_d_tag
@@ -19,17 +20,19 @@ def playground(announce=False):
     admin_config.REBROADCAST_NIP65_RELAY_LIST = announce
     admin_config.UPDATE_PROFILE = announce
 
-    name = "Generic DVM"
-    identifier = "a_very_generic_dvm"  # Chose a unique identifier in order to get a lnaddress
+    name = "Trending Pictures"
+    identifier = "trending_pictures_lumina"  # Chose a unique identifier in order to get a lnaddress
     dvm_config = build_default_config(identifier)
-    dvm_config.KIND = Kind(5050)  # Manually set the Kind Number (see data-vending-machines.org)
+    dvm_config.KIND = Kind(5300)  # Manually set the Kind Number (see data-vending-machines.org)
 
     # Add NIP89
     nip89info = {
         "name": name,
         "picture": "https://image.nostr.build/28da676a19841dcfa7dcf7124be6816842d14b84f6046462d2a3f1268fe58d03.png",
-        "about": "I'm just a demo DVM, not doing much.'",
+        "about": "I show trending pictures (powered by LUMINA.rocks)",
         "supportsEncryption": True,
+        "personalized": False,
+        "amount": 0,
         "acceptsNutZaps": dvm_config.ENABLE_NUTZAP,
         "nip90Params": {
         }
@@ -39,21 +42,9 @@ def playground(announce=False):
     nip89config.DTAG = check_and_set_d_tag(identifier, name, dvm_config.PRIVATE_KEY, nip89info["picture"])
     nip89config.CONTENT = json.dumps(nip89info)
 
-    options = {
-        "some_option": "#RunDVM",
-    }
-
-    dvm = GenericDVM(name=name, dvm_config=dvm_config, nip89config=nip89config,
-                     admin_config=admin_config, options=options)
-
-    async def process(request_form):
-        options = dvm.set_options(request_form)
-        result = "The result of the DVM is: "
-        result += options["some_option"]
-        print(result)
-        return result
-
-    dvm.process = process  # overwrite the process function with the above one
+    dvm = TrendingLUMINARelay(name=name, dvm_config=dvm_config, nip89config=nip89config,
+                 admin_config=admin_config)
+    
     framework.add(dvm)
 
     framework.run()
