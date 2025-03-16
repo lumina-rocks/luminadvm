@@ -28,7 +28,7 @@ def playground(announce=False):
     # Add NIP89
     nip89info = {
         "name": name,
-        "picture": "https://image.nostr.build/28da676a19841dcfa7dcf7124be6816842d14b84f6046462d2a3f1268fe58d03.png",
+        "picture": "https://nosto.re/9a743767cdaa96889c335bc4ded7d5d72bd881b43d04fd95b1e69f102466f7a3.png",
         "about": "I show trending pictures (powered by LUMINA.rocks)",
         "supportsEncryption": True,
         "personalized": False,
